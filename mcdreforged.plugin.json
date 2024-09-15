@@ -3,10 +3,9 @@
     "version": "1.2",
     "name": "PlayerCommandPlus",
     "description": "A MCDR plugin to strengthen the ability of player command",
-    "author": "woshikedayaa",
-    "link": "https://github.com/woshikedayaa/playerCommandPlus",
+    "author": "YedLeo1",
+    "link": "https://github.com/YedLeo1/playerCommandPlus",
     "dependencies": {
-        "minecraft_data_api": "*",
        "mcdreforged": ">=2.6"
     }
 }

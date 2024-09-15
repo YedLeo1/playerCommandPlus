@@ -1,5 +1,3 @@
-import minecraft_data_api as api
-from mcdreforged.api.types import CommandSource
 from mcdreforged.minecraft.rcon.rcon_connection import RconConnection
 import parse
 import re
@@ -120,4 +118,9 @@ def getplayerinfo(conn,player,path):
 
     return value
 
-
+def init(conn, player):
+    pos = GetPlayerLocation(conn, player)
+    dimesion = GetPlayerDimesion(conn, player)
+    Rotation = GetPlayerRotation(conn, player)
+    gamemode = ["survival", "creative", "adventure", "spectator"][GetPlayerGamemode(conn, player)]
+    return pos,dimesion,Rotation,gamemode

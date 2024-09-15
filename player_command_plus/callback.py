@@ -1,6 +1,5 @@
 import math
 import time
-from player_command_plus import global_var
 from mcdreforged.api.types import CommandSource
 from mcdreforged.api.all import *
 
@@ -114,24 +113,16 @@ def OperateBots(source:CommandSource,ctx):
     #生成假人
 
     if actionArray[0] == "spawn":
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
-        Rotation = utils.GetPlayerRotation(conn,source.player)
-        gamemode = ["survival","creative","adventure","spectator"][utils.GetPlayerGamemode(conn,source.player)]
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
 
         for elem in BotList:
-            #报错让他自己憋去吧
             spawnStr = "player {} spawn at {} {} {} facing {} {} in {} in {}".format(elem,pos.x,pos.y,pos.z,Rotation[0],Rotation[1],dimesion,gamemode)
             server.execute(spawnStr)
             loadplayer(conn,elem)
 
         return
     elif actionArray[0] == "init":
-        # 只有生成假人获取坐标才有意义
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
-        Rotation = utils.GetPlayerRotation(conn,source.player)
-        gamemode = ["survival", "creative", "adventure", "spectator"][utils.GetPlayerGamemode(conn,source.player)]
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
 
         for elem in BotList:
 
@@ -148,8 +139,7 @@ def OperateBots(source:CommandSource,ctx):
             server.execute(spawnStr)
         return
     elif actionArray[0] == "full1":
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
         x1 = int(actionArray[1])
         y1 = int(actionArray[2])
         x2 = int(actionArray[3])
@@ -221,12 +211,6 @@ def OperateBots(source:CommandSource,ctx):
                         server.execute(spawnStr)
                     return
 
-                # source.reply(pos.x)
-                # source.reply(pos.z)
-                # source.reply(x)
-                # source.reply(z)
-                # source.reply(i)
-                # source.reply("\n")
                 print(1)
                 if pos.x != x+(i - i % 16) / 16 or pos.z != z+i % 16:
                     for elem1 in BotList1:
@@ -236,106 +220,9 @@ def OperateBots(source:CommandSource,ctx):
                     return
                 i += 1
     elif actionArray[0] == "load":
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
-        Rotation = utils.GetPlayerRotation(conn,source.player)
-        gamemode = ["survival", "creative", "adventure", "spectator"][utils.GetPlayerGamemode(conn,source.player)]
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
         time.sleep(1)
 
-        # if actionArray[1]=="pro":
-        #     for elem in BotList:
-        #         spawnStr = "player {} spawn at {} {} {} facing {} {} in {} in {}".format(elem, pos.x, pos.y, pos.z,
-        #                                                                                  Rotation[0], Rotation[1],
-        #                                                                                  dimesion,
-        #                                                                                  gamemode)
-        #         server.execute(spawnStr)
-        #
-        #         loadplayer(conn,elem)
-        #
-        #         time.sleep(0.4)
-        #
-        #         spawnStr = "player {} hotbar {}".format(elem,actionArray[2])
-        #         server.execute(spawnStr)
-        #         # source.reply(spawnStr)
-        #
-        #         spawnStr = "player {} swapHands".format(elem)
-        #         server.execute(spawnStr)
-        #         #
-        #
-        #         time.sleep(0.2)
-        #         spawnStr = "player {} hotbar 1".format(elem)
-        #         server.execute(spawnStr)
-        #
-        #         spawnStr = "player {} kill".format(elem)
-        #         server.execute(spawnStr)
-        #         time.sleep(0.85)
-        #
-        #     return
-        # elif actionArray[1] == "max":
-        #     pos = utils.GetPlayerLocation(conn,source.player)
-        #     dimesion = utils.GetPlayerDimesion(conn,source.player)
-        #     number=15
-        #     x = pos.x - (pos.x % 16)
-        #     z = pos.z - (pos.z % 16)
-        #     i = int(actionArray[2])
-        #
-        #     if len(actionArray) == 7:
-        #         number=int(actionArray[6])
-        #
-        #     elem=botName[0]
-        #
-        #     x1=float(actionArray[3])+0.5
-        #     y1=actionArray[4]
-        #     z1=float(actionArray[5])+0.5
-        #
-        #     # source.reply(x1)
-        #     # source.reply(y1)
-        #     # source.reply(z1)
-        #
-        #
-        #
-        #     for q in range(1,math.floor(448/number)):
-        #         # 报错让他自己憋去吧
-        #
-        #         if i>256:
-        #             return
-        #
-        #         spawnStr = "player {} spawn at {} {} {} facing 0 180 in {} in survival".format(elem, x + (
-        #                     i - i % 16) / 16 + 0.5, pos.y, z + i % 16 + 0.5, dimesion)
-        #         server.execute(spawnStr)
-        #
-        #
-        #         # source.reply(i)
-        #
-        #         loadplayer(conn,elem)
-        #         # time.sleep(1)
-        #
-        #         for k in range(0,number):
-        #             spawnStr = "player {} drop once".format(elem)
-        #             server.execute(spawnStr)
-        #             time.sleep(0.05)
-        #         # time.sleep(0.5)
-        #
-        #         spawnStr = "player {} kill".format(elem)
-        #         server.execute(spawnStr)
-        #
-        #         time.sleep(0.3)
-        #
-        #         i += 1
-        #
-        #         spawnStr = "player {} spawn at {} {} {} facing 0 180 in {} in survival".format(elem,x1,y1,z1, dimesion)
-        #         server.execute(spawnStr)
-        #
-        #         loadplayer(conn,elem)
-        #
-        #         time.sleep(0.1)
-        #
-        #         spawnStr = "player {} kill".format(elem)
-        #         server.execute(spawnStr)
-        #
-        #         time.sleep(0.3)
-        #     source.reply(i)
-        #     return
 
         for elem in BotList:
             spawnStr = "player {} spawn at {} {} {} facing {} {} in {} in {}".format(elem, pos.x, pos.y, pos.z,
@@ -371,8 +258,7 @@ def OperateBots(source:CommandSource,ctx):
 
         return
     elif actionArray[0] == "spawnn":
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
 
         x=pos.x - (pos.x % 16)
         z=pos.z - (pos.z % 16)
@@ -386,8 +272,7 @@ def OperateBots(source:CommandSource,ctx):
 
         return
     elif actionArray[0] == "full":
-        pos = utils.GetPlayerLocation(conn,source.player)
-        dimesion = utils.GetPlayerDimesion(conn,source.player)
+        pos,dimesion,Rotation,gamemode=utils.init(conn, source.player)
         x1 = int(actionArray[1])
         y1 = int(actionArray[2])
         x2 = int(actionArray[3])
