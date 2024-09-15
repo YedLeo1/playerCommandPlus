@@ -17,19 +17,11 @@ carpet:/player hello0 kill,/player hello1 kill...
 让hello0,hello1...hello10假人每10gt跳跃一次  
 carpet:/player hello0 jump interval 10,/player hello0 jump interval 10  
 ```
+## 改版作者
 
-## config
-```js
-{
-    // 前缀 #none 代表没有
-    "prefix":"#none",
-    // 后缀 #none 代表没有
-    "suffix":"#none"
-}
+YedLeo
 
-```
-
-## 作者
+## 原作者
 
 woshikedayaa  
 
