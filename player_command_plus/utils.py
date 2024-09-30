@@ -3,7 +3,7 @@ import parse
 import re
 import hjson
 import collections
-
+import anvil
 Coordinate = collections.namedtuple('Coordinate', 'x y z')
 
 
@@ -124,3 +124,50 @@ def init(conn, player):
     Rotation = GetPlayerRotation(conn, player)
     gamemode = ["survival", "creative", "adventure", "spectator"][GetPlayerGamemode(conn, player)]
     return pos,dimesion,Rotation,gamemode
+
+def px_to_mca(p_x, p_z):
+    # 玩家坐标 (Px, Pz)
+    cx = int(p_x / 16)  # 区块坐标 X
+    cz = int(p_z / 16)  # 区块坐标 Z
+
+    # .mca 文件名
+    rx = int(cx / 32)  #
+    rz = int(cz / 32)  #
+    if(p_x<0):
+        rx-=1
+        cx-=1
+    if(p_z < 0):
+        rz -= 1
+        cz-=1
+
+    return cx, cz, rx,rz
+def maxhigh(x1,y1):
+    # print(x1,y1)
+    cx, cz, rx,ry=px_to_mca(x1,y1)
+
+    # print(cx,cz,rx,ry)
+
+    src_path = "./server/world/entities/r.{}.{}.mca".format(rx, ry)
+    dst_path = "./r.{}.{}.mca".format(rx, ry)
+    with open(src_path, "rb") as src, open(dst_path, "wb") as dst:
+        data = src.read()
+        dst.write(data)
+
+
+    region = anvil.Region.from_file('r.{}.{}.mca'.format(rx, ry))
+    # print(qukuai1(y1))
+    chunk = anvil.Chunk.from_region(region, cx, cz)
+    high=[]
+    temp=[]
+
+
+    for i in range(256):
+
+        y = 256
+        while chunk.get_block(i%16, y, int(i/16)).id == 'air':
+            y -= 1
+        temp.append(y+1)
+        if i%16==15:
+            high.append(temp)
+            temp=[]
+    return high

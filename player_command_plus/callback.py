@@ -164,7 +164,23 @@ def OperateBots(source:CommandSource,ctx):
             loadplayer(conn,elem)
 
         return
-    # elif actionArray[0] == "a":
+    elif actionArray[0] == "a":
+        pos, dimesion, Rotation, gamemode = utils.init(conn, source.player)
+
+        x1 = int(pos.x)
+        y1 = int(pos.z)
+
+        if (x1 >= 0):
+            x11 = x1
+        else:
+            x11 = 16 - (-x1 % 16)
+
+        if (y1 >= 0):
+            y11 = y1
+        else:
+            y11 = 16 - (-y1 % 16)
+        print(utils.maxhigh(x1, y1)[y11][x11])
+        # print(a)
 
     elif actionArray[0] == "keep":
         BotList1=BotList
@@ -303,7 +319,6 @@ def OperateBots(source:CommandSource,ctx):
             server.execute(spawnStr)
         return
     else:
-        #把action变成carpet看得懂的样子
         if actionArray[0] not in global_var.vaild_action_dict:
             source.reply("未知的action")
             return
@@ -311,8 +326,6 @@ def OperateBots(source:CommandSource,ctx):
         prefix = "" if global_var.serverConfig["prefix"]=="#none" else global_var.serverConfig["prefix"]
         suffix = "" if global_var.serverConfig["suffix"]=="#none" else global_var.serverConfig["suffix"]
         for elem in BotList:
-            #报错让他自己憋去吧
-            
             server.execute("player {} {}".format(prefix+elem+suffix,action))
         return
 
