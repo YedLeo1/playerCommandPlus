@@ -180,7 +180,6 @@ def OperateBots(source:CommandSource,ctx):
         else:
             y11 = 16 - (-y1 % 16)
         source.reply(utils.maxhigh(x1, y1)[y11][x11])
-
     elif actionArray[0] == "keep":
         BotList1=BotList
         playerlist = utils.getplayer(conn)

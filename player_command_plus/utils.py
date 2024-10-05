@@ -107,7 +107,6 @@ def getplayer(conn):
             return parsed['players']
 
 def getplayerinfo(conn,player,path):
-
     text = conn.send_command("data get entity {} {}".format(player, path))
     text = re.sub(r'^.* has the following entity data: ', '', text)  # yeet prefix
 
