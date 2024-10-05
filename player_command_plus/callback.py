@@ -1,9 +1,8 @@
-import math
 import time
 from mcdreforged.api.types import CommandSource
 from mcdreforged.api.all import *
 
-from player_command_plus import utils
+from player_command_plus import utils, global_var
 
 
 def loadplayer(conn,elem):
@@ -15,10 +14,11 @@ def loadplayer(conn,elem):
 
 @new_thread('PlayerCommandPlus')
 def OperateBots(source:CommandSource,ctx):
+
     global ss
     conn = utils.RconInit()
 
-    if source.is_player==False:
+    if not source.is_player:
         source.reply("只有玩家可使用")
         return
     action:str = ctx["action"]
@@ -171,16 +171,15 @@ def OperateBots(source:CommandSource,ctx):
         y1 = int(pos.z)
 
         if (x1 >= 0):
-            x11 = x1
+            x11 = x1%16
         else:
             x11 = 16 - (-x1 % 16)
 
         if (y1 >= 0):
-            y11 = y1
+            y11 = y1%16
         else:
             y11 = 16 - (-y1 % 16)
-        print(utils.maxhigh(x1, y1)[y11][x11])
-        # print(a)
+        source.reply(utils.maxhigh(x1, y1)[y11][x11])
 
     elif actionArray[0] == "keep":
         BotList1=BotList
@@ -278,10 +277,14 @@ def OperateBots(source:CommandSource,ctx):
 
         x=pos.x - (pos.x % 16)
         z=pos.z - (pos.z % 16)
+        y=utils.maxhigh(x,z)
         i=0
         for elem in BotList:
-            # 报错让他自己憋去吧
-            spawnStr = "player {} spawn at {} {} {} facing 0 180 in {} in survival".format(elem,x+(i-i%16)/16+0.5,pos.y,z+i%16+0.5,dimesion)
+
+            spawnStr = "player {} spawn at {} {} {} facing 0 180 in {} in survival".format(elem,x+(i-i%16)/16+0.5,utils.max_y(y,x+(i-i%16)/16,z+i%16),z+i%16+0.5,dimesion)
+
+
+
             server.execute(spawnStr)
             i+=1
             loadplayer(conn,elem)

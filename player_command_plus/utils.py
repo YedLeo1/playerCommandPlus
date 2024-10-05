@@ -142,19 +142,10 @@ def px_to_mca(p_x, p_z):
 
     return cx, cz, rx,rz
 def maxhigh(x1,y1):
-    # print(x1,y1)
+
     cx, cz, rx,ry=px_to_mca(x1,y1)
 
-    # print(cx,cz,rx,ry)
-
-    src_path = "./server/world/entities/r.{}.{}.mca".format(rx, ry)
-    dst_path = "./r.{}.{}.mca".format(rx, ry)
-    with open(src_path, "rb") as src, open(dst_path, "wb") as dst:
-        data = src.read()
-        dst.write(data)
-
-
-    region = anvil.Region.from_file('r.{}.{}.mca'.format(rx, ry))
+    region = anvil.Region.from_file('./server/world/region/r.{}.{}.mca'.format(rx, ry))
     # print(qukuai1(y1))
     chunk = anvil.Chunk.from_region(region, cx, cz)
     high=[]
@@ -171,3 +162,18 @@ def maxhigh(x1,y1):
             high.append(temp)
             temp=[]
     return high
+
+def max_y(y,x1,y1):
+    x1 = int(x1)
+    y1 = int(y1)
+
+    if (x1 >= 0):
+        x11 = x1 % 16
+    else:
+        x11 = 16 - (-x1 % 16)
+
+    if (y1 >= 0):
+        y11 = y1 % 16
+    else:
+        y11 = 16 - (-y1 % 16)
+    return y[y11][x11]
